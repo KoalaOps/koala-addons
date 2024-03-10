@@ -1,0 +1,44 @@
+{{- $addonValues := default dict .Values.addonValues -}}
+{{- $grafanaAddon := default dict (index $addonValues "grafanaAddon") -}}
+{{- if $grafanaAddon.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana-addon-{{ .Values.addonValues.cluster.name }}
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: cluster-admin
+  source:
+    {{- $grafanaChart := $grafanaAddon.valuesObject.charts.grafana }}
+    repoURL: {{$grafanaChart.repository}}
+    targetRevision: {{$grafanaChart.version}}
+    chart: {{$grafanaChart.name}}
+    helm:
+      releaseName: "grafana-{{ .Values.addonValues.cluster.name }}"
+      parameters: 
+        {{- if $grafanaAddon.addonParameters.ingressHost }}
+        - name: "grafana\\.ini.server.domain"
+          value: {{$grafanaAddon.addonParameters.ingressHost}}
+         {{- end }}
+      {{- range $key, $value := $grafanaChart.parameters }}
+        - name: {{ $key }}
+          value: {{ $value }}
+      {{- end }}
+      values: |{{include "defaultPresetGrafana" $ | nindent 8}}
+      valuesObject: 
+        {{- if $grafanaAddon.valuesObject.grafana }}
+        {{- toYaml $grafanaAddon.valuesObject.grafana | nindent 8 }}
+        {{- end }}
+  destination:
+    server: {{ .Values.destination.server }}
+    namespace: {{ .Values.destination.namespace }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: true
+  {{- end }}

@@ -1,0 +1,43 @@
+{{- $addonValues := default dict .Values.addonValues -}}
+{{- $grafanaTempoAddon := default dict (index $addonValues "grafanaTempoAddon") -}}
+{{- $addonParameters := default dict (index $grafanaTempoAddon "addonParameters") -}}
+{{- if and $grafanaTempoAddon.enabled $addonParameters.standardBackend }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana-tempo-addon-{{ .Values.addonValues.cluster.name }}
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: cluster-admin
+  source:
+    {{- $tempoChart := $grafanaTempoAddon.valuesObject.charts.tempo }}
+    repoURL: {{$tempoChart.repository}}
+    targetRevision: {{$tempoChart.version}}
+    chart: {{$tempoChart.name}}
+    helm:
+      releaseName: "grafana-tempo-{{ .Values.addonValues.cluster.name }}"
+      {{- if $tempoChart.parameters }}
+      parameters: 
+      {{- range $key, $value := $tempoChart.parameters }}
+        - name: {{ $key }}
+          value: {{ $value }}
+      {{- end }}
+      {{- end }}
+      values: |{{include "defaultPresetTempo" . | nindent 8}}
+      valuesObject: 
+        {{- if $grafanaTempoAddon.valuesObject.tempo }}
+        {{- toYaml $grafanaTempoAddon.valuesObject.tempo | nindent 8 }}
+        {{- end }}
+  destination:
+    server: {{ .Values.destination.server }}
+    namespace: {{ .Values.destination.namespace }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: true
+{{- end }}

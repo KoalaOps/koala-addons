@@ -1,0 +1,179 @@
+{{- $addonValues := default dict .Values.addonValues -}}
+{{- $otelCollectorAddon := default dict (index $addonValues "otelCollectorAddon") -}}
+{{- if $otelCollectorAddon.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: otel-collector-addon-{{ .Values.addonValues.cluster.name }}
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: cluster-admin
+  source:
+    {{- $otelCollectorChart := $otelCollectorAddon.valuesObject.charts.collector }}
+    repoURL: {{$otelCollectorChart.repository}}
+    targetRevision: {{$otelCollectorChart.version}}
+    chart: {{$otelCollectorChart.name}}
+    helm:
+      releaseName: "otel-collector-{{ .Values.addonValues.cluster.name }}"
+    {{- if $otelCollectorChart.parameters }}
+      parameters: 
+      {{- range $key, $value := $otelCollectorChart.parameters }}
+        - name: {{ $key }}
+          value: {{ $value }}
+      {{- end }}
+    {{- end }}
+      valuesObject: 
+      {{- with .Values.addonValues }}
+        enabled: {{ .otelCollectorAddon.enabled }}
+        {{- $tempoIngressEnabled := false }}
+        {{- if and .grafanaTempoAddon .grafanaTempoAddon.valuesObject .grafanaTempoAddon.valuesObject.ingress .grafanaTempoAddon.valuesObject.ingress.enabled }}
+          {{- $tempoIngressEnabled = .grafanaTempoAddon.valuesObject.ingress.enabled }}
+        {{- end }}
+        {{- if $tempoIngressEnabled }}
+        {{- with .grafanaTempoAddon.valuesObject.ingress }}
+        extraEnvs:
+          - name: TEMPO_AUTH_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "authSecretName" $ }}
+                key: auth-client
+        {{- end }}
+        {{- end }}
+        mode: deployment
+        presets:
+          kubernetesAttributes:
+            enabled: true
+        resources:
+          limits:
+            memory: 200Mi
+        service:
+          type: ClusterIP
+        ports:
+          metrics:
+            enabled: true
+          prometheus:
+            enabled: true
+            containerPort: 9464
+            servicePort: 9464
+            protocol: TCP
+        podAnnotations:
+          prometheus.io/scrape: "true"
+          prometheus.io/port: "9464"
+          koala_managed: "true"
+        config:
+          exporters:
+          {{- if and .grafanaMimirAddon (eq .grafanaMimirAddon.enabled true) }}
+            prometheusremotewrite:
+              endpoint: "http://tracing-mimir-nginx.{{ .Release.Namespace }}/api/v1/push"
+              tls:
+                insecure: true
+          {{- end }}
+          {{- if $tempoIngressEnabled }}
+          {{- with .grafanaTempoAddon.valuesObject.ingress }}
+            otlp/tracing:
+              endpoint: "{{ .host }}:443"
+              headers:
+                authorization: Basic ${env:TEMPO_AUTH_TOKEN}
+          {{- end }}
+          {{else}}
+            otlp/tracing:
+                endpoint: http://tracing-tempo-distributor.observability.svc:4317
+                tls:
+                  insecure: true
+          {{- end }}
+            debug:
+              verbosity: detailed
+              sampling_initial: 5
+              sampling_thereafter: 200
+            
+          extensions:
+            health_check: {}
+            memory_ballast:
+              size_in_percentage: 40
+          processors:
+            resource:
+                attributes:
+                - key: service.instance.id
+                  from_attribute: k8s.pod.uid
+                  action: insert
+            filter/empty_http_server_duration:
+              error_mode: ignore
+              metrics:
+                metric:
+                    - 'name == "http.server.duration" and type != METRIC_DATA_TYPE_HISTOGRAM'
+                    - 'name == "http.client.duration" and type != METRIC_DATA_TYPE_HISTOGRAM'
+            batch: {}
+            memory_limiter:
+              check_interval: 5s
+              limit_percentage: 80
+              spike_limit_percentage: 25
+
+          receivers:
+            jaeger:
+              protocols:
+                grpc:
+                  endpoint: ${env:MY_POD_IP}:14250
+                thrift_compact:
+                  endpoint: ${env:MY_POD_IP}:6831
+                thrift_http:
+                  endpoint: ${env:MY_POD_IP}:14268
+            otlp:
+              protocols:
+                grpc:
+                  endpoint: ${env:MY_POD_IP}:4317
+                http:
+                  endpoint: ${env:MY_POD_IP}:4318
+            prometheus:
+              config:
+                scrape_configs:
+                  - job_name: opentelemetry-collector
+                    scrape_interval: 10s
+                    static_configs:
+                      - targets:
+                          - ${env:MY_POD_IP}:8888
+          service:
+            extensions:
+              - health_check
+              - memory_ballast
+            pipelines:
+            {{- if and .grafanaTempoAddon (eq .grafanaTempoAddon.enabled true) }}
+              traces:
+                exporters:
+                  - otlp/tracing
+                processors:
+                  - k8sattributes
+                  - memory_limiter
+                  - batch
+                receivers:
+                  - otlp
+                  - jaeger
+            {{- end }}
+              metrics:
+                receivers: 
+                  - otlp
+                  - prometheus
+                processors: 
+                  - memory_limiter
+                  - k8sattributes
+                  - filter/empty_http_server_duration
+                  - resource
+                  - batch
+                exporters: 
+                  {{- if and .grafanaMimir (eq .grafanaMimir.enabled true) }}
+                  - prometheusremotewrite
+                  {{- end }}
+                  - debug
+      {{- end }}
+  destination:
+    server: {{ .Values.destination.server }}
+    namespace: {{ .Values.destination.namespace }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: true
+{{- end }}

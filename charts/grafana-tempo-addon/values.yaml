@@ -1,0 +1,38 @@
+destination:
+  server: unknown
+  namespace: observability
+addonValues:
+  parameters: {}
+  cluster:
+    name: unknown
+  grafanaTempoAddon:
+    enabled: true
+    branch: main
+    # example for presets
+    # addonParameters:
+    #  standardBackend: true
+    #  createSecrets: true
+    #  mirrorSecretToAllClusters: true
+    #  standardClient: true
+    addonParameters: {}
+    valuesObject:
+      secretName: tempo-auth
+      tempo: {}
+      ingress:
+        enabled: false
+        # following are here for FYI as helpers calculate the values based on the following logic
+        # authSecretName: grafana-tempo-gw-default-basic-auth-{{ .Release.Name }}
+        # tlsSecretName: "grafana-tempo-gw-tls-cert-{{ .Release.Name }}"        
+        host: tempo.example.com
+        basicAuth:
+          enabled: true
+        service:
+          name: tracing-tempo-distributor
+          port: 4317
+          prefix: /
+      charts:
+        # The following charts were tested with the addon, you may overide these values if you know what you are doing.
+        tempo:
+          name: tempo-distributed
+          version: 1.8.3
+          repository: https://grafana.github.io/helm-charts

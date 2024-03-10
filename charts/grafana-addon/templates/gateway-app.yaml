@@ -1,0 +1,53 @@
+{{- $addonValues := default dict .Values.addonValues -}}
+{{- $grafanaAddon := default dict (index $addonValues "grafanaAddon") -}}
+{{- if $grafanaAddon.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana-gateway-{{ .Values.addonValues.cluster.name }}
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: cluster-admin
+  source:
+    repoURL: https://koalaops.github.io/koala-addons
+    targetRevision: 0.1.0
+    chart: yaml-to-manifest
+    helm:
+      releaseName: "grafana-gateway-{{ .Values.addonValues.cluster.name }}"
+      valuesObject: 
+        manifests:
+          - apiVersion: networking.k8s.io/v1
+            kind: Ingress
+            metadata:
+              annotations:
+                cert-manager.io/cluster-issuer: letsencrypt
+              name: grafana-gw-ingress
+              namespace: {{ .Values.addonValues.namespace}}
+            spec:
+              ingressClassName: nginx
+              rules:
+              - host: "{{ $grafanaAddon.addonParameters.ingressHost }}"
+                http:
+                  paths:
+                  - backend:
+                      service:
+                        name: grafana
+                        port:
+                          number: 80
+                    path: /
+                    pathType: Prefix
+              tls:
+              - hosts:
+                - "{{ $grafanaAddon.addonParameters.ingressHost }}"
+                secretName: grafana-gw-tls-cert
+            status:
+              loadBalancer: {}
+  destination:
+    server: {{ .Values.destination.server }}
+    namespace: {{ .Values.destination.namespace }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+  {{- end }}

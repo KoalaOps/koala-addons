@@ -1,0 +1,14 @@
+destination:
+  server: unknown
+  namespace: observability
+addonValues:
+  parameters: {}
+  cluster:
+    name: unknown
+  namespace: observability
+  ingress:
+    enabled: true
+    host: grafana.example.com
+  grafanaAddon:
+    valuesObject:
+      grafana: {}

@@ -1,0 +1,4 @@
+apiVersion: v2
+name: yaml-to-manifest
+description: Converts yaml objects to manifests
+version: 0.1.0

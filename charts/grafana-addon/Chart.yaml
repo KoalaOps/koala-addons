@@ -1,0 +1,4 @@
+apiVersion: v2
+name: grafana-addon
+description: grafana app addon test
+version: 0.1.11

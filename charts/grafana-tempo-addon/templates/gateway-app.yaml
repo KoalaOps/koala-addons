@@ -1,0 +1,63 @@
+{{- $addonValues := default dict .Values.addonValues -}}
+{{- $grafanaTempoAddon := default dict (index $addonValues "grafanaTempoAddon") -}}
+{{- $addonParameters := default dict (index $grafanaTempoAddon "addonParameters") -}}
+{{- $valuesObject := default dict (index $grafanaTempoAddon "valuesObject") -}}
+{{- if and $valuesObject.ingress.enabled $addonParameters.standardBackend (not (empty $valuesObject.ingress.host)) }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana-tempo-gateway-{{ .Values.addonValues.cluster.name }}
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: cluster-admin
+  source:
+    repoURL: https://koalaops.github.io/koala-addons
+    targetRevision: 0.1.0
+    chart: yaml-to-manifest
+    helm:
+      releaseName: "grafana-tempo-gateway-{{ $addonValues.cluster.name }}"
+      valuesObject: 
+        manifests:
+          - apiVersion: networking.k8s.io/v1
+            kind: Ingress
+            metadata:
+              annotations:
+                cert-manager.io/cluster-issuer: letsencrypt
+                {{- if $valuesObject.ingress.basicAuth.enabled }}
+                nginx.ingress.kubernetes.io/auth-type: basic
+                nginx.ingress.kubernetes.io/auth-secret: {{ include "authSecretName" . }}
+                nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+                {{- end }}
+                nginx.ingress.kubernetes.io/grpc-backend: "true" # Enable gRPC backend
+                nginx.ingress.kubernetes.io/ssl-redirect: "true" # Force HTTPS, important for HTTP/2
+                nginx.ingress.kubernetes.io/backend-protocol: "GRPC" # Force gRPC protocol
+              name: grafana-tempo-gw-ingress-{{ .Release.Name }}
+              namespace: {{ .Values.destination.namespace }}
+            spec:
+              ingressClassName: nginx
+              rules:
+              - host: {{ $valuesObject.ingress.host }}
+                http:
+                  paths:
+                  - backend:
+                      service:
+                        name: {{ $valuesObject.ingress.service.name}}
+                        port:
+                          number: {{ $valuesObject.ingress.service.port}}
+                    path: "/"
+                    pathType: Prefix
+              tls:
+              - hosts:
+                - {{ $valuesObject.ingress.host}}
+                secretName: {{ include "tlsSecretName" . }}
+            status:
+              loadBalancer: {}
+  destination:
+    server: {{ .Values.destination.server }}
+    namespace: {{ .Values.destination.namespace }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+  {{- end }}

@@ -1,0 +1,34 @@
+{{- $addonValues := default dict .Values.addonValues -}}
+{{- $grafanaAddon := default dict (index $addonValues "grafanaAddon") -}}
+{{- if $grafanaAddon.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana-dashboards-{{ .Values.addonValues.cluster.name }}
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: cluster-admin
+  source:
+    repoURL: https://koalaops.github.io/koala-addons
+    targetRevision: 0.1.0
+    chart: yaml-to-manifest
+    helm:
+      releaseName: "grafana-dashbaords"
+      valuesObject: 
+        manifests:
+          - apiVersion: v1 # Source: opentelemetry-demo/templates/grafana-dashboards.yaml
+            kind: ConfigMap
+            metadata:
+              name: koala-grafana-dashboards
+            data:
+              {{- include  "grafana-demo-dashboard" . | nindent 12 }}
+              {{- include  "grafana-dashboard-spanmetrics" . | nindent 12 }}
+  destination:
+    server: {{ .Values.destination.server }}
+    namespace: {{ .Values.destination.namespace }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+  {{- end }}

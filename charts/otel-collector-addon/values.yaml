@@ -1,0 +1,7 @@
+destination:
+  server: unknown
+  namespace: observability
+addonValues:
+  parameters: {}
+  cluster:
+    name: unknown
