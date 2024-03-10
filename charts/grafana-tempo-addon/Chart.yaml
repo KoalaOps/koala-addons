@@ -1,4 +1,4 @@
 apiVersion: v2
 name: grafana-tempo-addon
 description: grafana app addon test
-version: 0.1.7
+version: 0.1.0
