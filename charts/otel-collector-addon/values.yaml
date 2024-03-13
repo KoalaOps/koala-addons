@@ -5,3 +5,33 @@ addonValues:
   parameters: {}
   cluster:
     name: unknown
+  otelCollectorAddon:
+    enabled: true
+    # example for presets
+    # addonParameters:
+    addonParameters:
+      mimir:        
+        enabled: false
+        # insecureHost: false
+        # hostAndPort: mimir.example.com
+        # basicAuth:
+        #  enabled: true
+        #  secretName: mimir-auth
+      tempo:
+        enabled: false
+        # insecureHost: true
+        # hostAndPort: mimir.example.com
+        # basicAuth:
+        #  enabled: true
+        #  secretName: tempo-auth
+
+    valuesObject:
+      collector: {}
+      charts:
+        # The following charts were tested with the addon, you may overide these values if you know what you are doing.
+        collector:
+          name: opentelemetry-collector
+          version: 0.82.0
+          repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+          parameters:
+            fullnameOverride: "otel-collector-opentelemetry-collector"
