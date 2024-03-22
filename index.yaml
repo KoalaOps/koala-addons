@@ -1,0 +1,30 @@
+apiVersion: v1
+entries:
+  grafana-addon:
+  - apiVersion: v2
+    created: "2024-03-22T21:41:27.240025646Z"
+    description: grafana app addon test
+    digest: 2ee663a50b0998780ae7b4a37a8e4ee1523b8320161c7a9530d7ea6fbb16d382
+    name: grafana-addon
+    urls:
+    - https://github.com/KoalaOps/koala-addons/releases/download/grafana-addon-0.1.1/grafana-addon-0.1.1.tgz
+    version: 0.1.1
+  grafana-tempo-addon:
+  - apiVersion: v2
+    created: "2024-03-22T21:41:27.438620029Z"
+    description: grafana app addon test
+    digest: 58ad617bc2958b89f4a69657897f730157a2ff46e9c02d345307749e5ca017d7
+    name: grafana-tempo-addon
+    urls:
+    - https://github.com/KoalaOps/koala-addons/releases/download/grafana-tempo-addon-0.1.1/grafana-tempo-addon-0.1.1.tgz
+    version: 0.1.1
+  otel-collector-addon:
+  - apiVersion: v2
+    created: "2024-03-22T21:41:27.614343677Z"
+    description: otel collector
+    digest: a037ab3b7d49b54c391fc987d8e1654a995f5a7eacd0fb91bcaf4a8d098277ce
+    name: otel-collector-addon
+    urls:
+    - https://github.com/KoalaOps/koala-addons/releases/download/otel-collector-addon-0.1.1/otel-collector-addon-0.1.1.tgz
+    version: 0.1.1
+generated: "2024-03-22T21:41:27.614361421Z"
