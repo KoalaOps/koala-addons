@@ -1,6 +1,8 @@
 {{- $addonValues := default dict .Values.addonValues -}}
 {{- $otelCollectorAddon := default dict (index $addonValues "otelCollectorAddon") -}}
+{{- $addonParameters := default dict (index $addonValues "addonParameters") -}}
 {{- if $otelCollectorAddon.enabled }}
+{{-  $Namespace := .Release.Namespace }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -27,19 +29,20 @@ spec:
       valuesObject: 
       {{- with .Values.addonValues }}
         enabled: {{ .otelCollectorAddon.enabled }}
-        {{- $tempoIngressEnabled := false }}
-        {{- if and .grafanaTempoAddon .grafanaTempoAddon.valuesObject .grafanaTempoAddon.valuesObject.ingress .grafanaTempoAddon.valuesObject.ingress.enabled }}
-          {{- $tempoIngressEnabled = .grafanaTempoAddon.valuesObject.ingress.enabled }}
-        {{- end }}
-        {{- if $tempoIngressEnabled }}
-        {{- with .grafanaTempoAddon.valuesObject.ingress }}
-        extraEnvs:
+        extraEnvs:  
+        {{- if and $addonParameters.tempo.enabled  $addonParameters.tempo.basicAuth.enabled  }}
           - name: TEMPO_AUTH_TOKEN
             valueFrom:
               secretKeyRef:
-                name: {{ include "authSecretName" $ }}
+                name: {{ $addonParameters.tempo.basicAuth.secretName }}
                 key: auth-client
         {{- end }}
+        {{- if $addonParameters.mimir.enabled  $addonParameters.mimir.basicAuth.enabled  }}
+          - name: MIMIR_AUTH_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: {{ $addonParameters.mimir.basicAuth.secretName }}
+                key: auth-client
         {{- end }}
         mode: deployment
         presets:
@@ -64,29 +67,48 @@ spec:
           koala_managed: "true"
         config:
           exporters:
-          {{- if and .grafanaMimirAddon (eq .grafanaMimirAddon.enabled true) }}
+          {{- if $addonParameters.mimir.enabled }}
             prometheusremotewrite:
-              endpoint: "http://tracing-mimir-nginx.{{ .Release.Namespace }}/api/v1/push"
+              endpoint: "http://tracing-mimir-nginx.{{ $Namespace }}/api/v1/push"
+            {{- if .insecureHost}}
               tls:
                 insecure: true
+            {{- end }}
           {{- end }}
-          {{- if $tempoIngressEnabled }}
-          {{- with .grafanaTempoAddon.valuesObject.ingress }}
-            otlp/tracing:
-              endpoint: "{{ .host }}:443"
-              headers:
-                authorization: Basic ${env:TEMPO_AUTH_TOKEN}
-          {{- end }}
-          {{else}}
-            otlp/tracing:
-                endpoint: http://tracing-tempo-distributor.observability.svc:4317
+
+          {{- with $addonParameters.mimir }}
+          {{- if .enabled }}
+            prometheusremotewrite:
+              {{- if .host }}
+                endpoint: "{{ .host }}"
+              {{- else}}
+                endpoint: "http://tracing-mimir-nginx.{{ $Namespace }}/api/v1/push"
+              {{- end }}
+              {{- if .insecureHost}}
                 tls:
                   insecure: true
-          {{- end }}
-            debug:
-              verbosity: detailed
-              sampling_initial: 5
-              sampling_thereafter: 200
+              {{- end }}
+              {{- if .basicAuth.enabled }}
+                headers:
+                  authorization: Basic ${env:MIMIR_AUTH_TOKEN}
+              {{- end }}
+          {{- end}}
+          {{- end}}
+
+          {{- with $addonParameters.tempo }}
+          {{- if .enabled }}
+            otlp/tracing:
+              {{- if .host }}
+                endpoint: "{{ .host }}"
+              {{- else}}
+                endpoint: "http://tracing-tempo-distributor.observability.svc:4317"
+              {{- end }}
+              {{- if .basicAuth.enabled }}
+                headers:
+                  authorization: Basic ${env:TEMPO_AUTH_TOKEN}
+              {{- end }}
+          {{- end}}
+          {{- end}}
             
           extensions:
             health_check: {}
@@ -138,7 +160,7 @@ spec:
               - health_check
               - memory_ballast
             pipelines:
-            {{- if and .grafanaTempoAddon (eq .grafanaTempoAddon.enabled true) }}
+            {{- if $addonParameters.tempo.enabled }}
               traces:
                 exporters:
                   - otlp/tracing
@@ -161,10 +183,11 @@ spec:
                   - resource
                   - batch
                 exporters: 
-                  {{- if and .grafanaMimir (eq .grafanaMimir.enabled true) }}
+                  {{- if $addonParameters.mimir.enabled }}
                   - prometheusremotewrite
-                  {{- end }}
+                  {{- else}}
                   - debug
+                  {{- end }}
       {{- end }}
   destination:
     server: {{ .Values.destination.server }}
