@@ -36,4 +36,12 @@ entries:
     urls:
     - https://github.com/KoalaOps/koala-addons/releases/download/yaml-to-manifest-0.1.1/yaml-to-manifest-0.1.1.tgz
     version: 0.1.1
-generated: "2024-03-22T21:54:50.543837228Z"
+  - apiVersion: v2
+    created: "2024-03-22T21:56:25.863907967Z"
+    description: Converts yaml objects to manifests
+    digest: ca08a2e4bbad85391be129ebe92086d6b506751417bb39964613254bdc690e73
+    name: yaml-to-manifest
+    urls:
+    - https://github.com/KoalaOps/koala-addons/releases/download/yaml-to-manifest-0.1.0/yaml-to-manifest-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-03-22T21:56:25.863917155Z"
