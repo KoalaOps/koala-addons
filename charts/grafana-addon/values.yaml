@@ -12,3 +12,9 @@ addonValues:
   grafanaAddon:
     valuesObject:
       grafana: {}
+    charts:
+        # The following charts were tested with the addon, you may overide these values if you know what you are doing.
+        tempo:
+          name: grafana
+          version: 7.3.0
+          repository: https://grafana.github.io/helm-charts
