@@ -25,6 +25,14 @@ entries:
     urls:
     - https://github.com/KoalaOps/koala-addons/releases/download/grafana-addon-0.1.1/grafana-addon-0.1.1.tgz
     version: 0.1.1
+  - apiVersion: v2
+    created: "2024-03-24T06:30:18.596105202Z"
+    description: grafana app addon test
+    digest: d045375d6dfaea94f4d1d0ef2b993651946742eaec54340237abc72fa1ab3bc2
+    name: grafana-addon
+    urls:
+    - https://github.com/KoalaOps/koala-addons/releases/download/grafana-addon-0.1.0/grafana-addon-0.1.0.tgz
+    version: 0.1.0
   grafana-tempo-addon:
   - apiVersion: v2
     created: "2024-03-22T21:41:27.438620029Z"
@@ -34,6 +42,14 @@ entries:
     urls:
     - https://github.com/KoalaOps/koala-addons/releases/download/grafana-tempo-addon-0.1.1/grafana-tempo-addon-0.1.1.tgz
     version: 0.1.1
+  - apiVersion: v2
+    created: "2024-03-24T06:30:18.738437131Z"
+    description: grafana app addon test
+    digest: d4692de6cf5b6a7a89efbae62d6681f9e9be88000eb61f363e3735318f5dc875
+    name: grafana-tempo-addon
+    urls:
+    - https://github.com/KoalaOps/koala-addons/releases/download/grafana-tempo-addon-0.1.0/grafana-tempo-addon-0.1.0.tgz
+    version: 0.1.0
   otel-collector-addon:
   - apiVersion: v2
     created: "2024-03-22T21:41:27.614343677Z"
@@ -43,6 +59,14 @@ entries:
     urls:
     - https://github.com/KoalaOps/koala-addons/releases/download/otel-collector-addon-0.1.1/otel-collector-addon-0.1.1.tgz
     version: 0.1.1
+  - apiVersion: v2
+    created: "2024-03-24T06:30:18.869439225Z"
+    description: otel collector
+    digest: 3e15d7076fd0832da594b439d7423b85352a8a9d60f1deaea9ba9ebacef706a2
+    name: otel-collector-addon
+    urls:
+    - https://github.com/KoalaOps/koala-addons/releases/download/otel-collector-addon-0.1.0/otel-collector-addon-0.1.0.tgz
+    version: 0.1.0
   yaml-to-manifest:
   - apiVersion: v2
     created: "2024-03-22T21:54:50.543823712Z"
@@ -60,4 +84,4 @@ entries:
     urls:
     - https://github.com/KoalaOps/koala-addons/releases/download/yaml-to-manifest-0.1.0/yaml-to-manifest-0.1.0.tgz
     version: 0.1.0
-generated: "2024-03-23T14:19:14.661004909Z"
+generated: "2024-03-24T06:30:18.869468259Z"
