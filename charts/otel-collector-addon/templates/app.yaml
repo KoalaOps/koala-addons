@@ -1,6 +1,6 @@
 {{- $addonValues := default dict .Values.addonValues -}}
 {{- $otelCollectorAddon := default dict (index $addonValues "otelCollectorAddon") -}}
-{{- $addonParameters := default dict (index $addonValues "addonParameters") -}}
+{{- $addonParameters := default dict (index $otelCollectorAddon "addonParameters") -}}
 {{- if $otelCollectorAddon.enabled }}
 {{-  $Namespace := .Release.Namespace }}
 apiVersion: argoproj.io/v1alpha1
@@ -30,14 +30,14 @@ spec:
       {{- with .Values.addonValues }}
         enabled: {{ .otelCollectorAddon.enabled }}
         extraEnvs:  
-        {{- if and $addonParameters.tempo.enabled  $addonParameters.tempo.basicAuth.enabled  }}
+        {{- if and $addonParameters.tempo $addonParameters.tempo.enabled  $addonParameters.tempo.basicAuth.enabled  }}
           - name: TEMPO_AUTH_TOKEN
             valueFrom:
               secretKeyRef:
                 name: {{ $addonParameters.tempo.basicAuth.secretName }}
                 key: auth-client
         {{- end }}
-        {{- if $addonParameters.mimir.enabled  $addonParameters.mimir.basicAuth.enabled  }}
+        {{- if $addonParameters.mimir $addonParameters.mimir.enabled  $addonParameters.mimir.basicAuth.enabled  }}
           - name: MIMIR_AUTH_TOKEN
             valueFrom:
               secretKeyRef:
