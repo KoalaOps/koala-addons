@@ -8,7 +8,8 @@ addonValues:
   namespace: kube-system
   sealedSecretsAddon:
     valuesObject:
-      sealedSecrets: {}
+      sealedsecrets:
+        secretName: sealed-secrets-key-test
       charts:
         # The following charts were tested with the addon, you may overide these values if you know what you are doing.
         sealedsecrets:
