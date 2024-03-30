@@ -24,8 +24,8 @@ spec:
       {{- end }}
       values: |{{include "defaultPresetSealedSecrets" $ | nindent 8}}
       valuesObject: 
-        {{- if $sealedSecretsAddon.valuesObject.sealedSecrets }}
-        {{- toYaml $sealedSecretsAddon.valuesObject.sealedSecrets | nindent 8 }}
+        {{- if $sealedSecretsAddon.valuesObject.sealedsecrets }}
+        {{- toYaml $sealedSecretsAddon.valuesObject.sealedsecrets | nindent 8 }}
         {{- end }}
   destination:
     server: {{ .Values.destination.server }}
