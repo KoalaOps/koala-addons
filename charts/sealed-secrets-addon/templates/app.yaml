@@ -11,7 +11,7 @@ metadata:
 spec:
   project: cluster-admin
   source:
-    {{- $sealedSecretsChart := $sealedSecretsAddon.valuesObject.charts.sealed-secrets }}
+    {{- $sealedSecretsChart := $sealedSecretsAddon.valuesObject.charts.sealedsecrets }}
     repoURL: {{$sealedSecretsChart.repository}}
     targetRevision: {{$sealedSecretsChart.version}}
     chart: {{$sealedSecretsChart.name}}
