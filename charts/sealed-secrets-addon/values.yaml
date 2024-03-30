@@ -15,4 +15,4 @@ addonValues:
           name: sealed-secrets
           alias: sealedsecrets
           version: 2.15.2
-          repository: https://bitnami-labs.github.io
+          repository: https://bitnami-labs.github.io/sealed-secrets
