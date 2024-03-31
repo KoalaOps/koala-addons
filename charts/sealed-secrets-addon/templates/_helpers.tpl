@@ -18,4 +18,5 @@ atest{{$index}}: test
 tls.crt: {{ $tlsCert | b64enc | quote }}
 tls.key: {{ $tlsKey  | b64enc | quote }}
 {{ end }}
+errorDefault: 34
 {{- end -}}
