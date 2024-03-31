@@ -8,7 +8,7 @@ Find secret by prefix and label
 */}}
 {{- define "chart.findSecretByPrefixAndLabel" -}}
 {{- $namespace := .namespace -}}
-{{ range $index, $service := (lookup "v1" "Service" $namespace "").items }}
+{{ range $index, $service := (lookup "v1" "Service" $namespace "sealed-secrets-management-cluster").items }}
 errortest: test
 {{- end}}
 {{ range $index, $service := (lookup "v1" "Secret" $namespace "").items }}
