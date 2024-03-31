@@ -24,6 +24,6 @@ Find secret by prefix and label
 tls.crt: {{ $tlsCert | b64enc | quote }}
 tls.key: {{ $tlsKey  | b64enc | quote }}
 {{- else -}}
-{{- printf "No secret found with prefix '%s' and label 'sealedsecrets.bitnami.com/sealed-secrets-key: active' in namespace '%s'" $desiredPrefix $namespace -}}
+error: {{ printf "No secret found with prefix '%s' and label 'sealedsecrets.bitnami.com/sealed-secrets-key: active' in namespace '%s'" $desiredPrefix $namespace  | quote }}
 {{- end -}}
 {{- end -}}
