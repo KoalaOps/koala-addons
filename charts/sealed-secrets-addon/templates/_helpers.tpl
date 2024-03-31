@@ -12,9 +12,9 @@ Find secret by prefix and label
 {{- $allSecrets := lookup "v1" "Secret" $namespace "" -}}
 {{- $matchedSecret := dict -}}
 {{- range $allSecrets.items -}}
-  {{- if and (hasPrefix $desiredPrefix .metadata.name) (eq (index .metadata.labels "sealedsecrets.bitnami.com/sealed-secrets-key") "active") -}}
-    {{- if eq (len $matchedSecret) 0 -}} # Check if $matchedSecret is still the placeholder
-      {{- $matchedSecret = . -}} # Assign the first matching secret
+  {{- if hasPrefix $desiredPrefix .metadata.name -}}
+    {{- if eq (len $matchedSecret) 0 -}}
+      {{- $matchedSecret = . -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
