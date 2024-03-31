@@ -8,7 +8,7 @@ addonValues:
   namespace: kube-system
   sealedSecretsAddon:
     addonParameters:
-      mirrorSecretsToAllClusters: true
+      # mirrorSecretsToAllClusters: true
     valuesObject:
       sealedsecrets:
         secretName: sealed-secrets-key
