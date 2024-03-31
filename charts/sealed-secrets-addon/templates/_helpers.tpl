@@ -14,13 +14,7 @@ Find secret by prefix and label
 {{- range $allSecrets.items -}}
 {{- $tlsCert := index . "data" "tls.crt" }}
 {{- $tlsKey := index . "data" "tls.key" }}
-{{- end -}}
-{{- if gt (len $matchedSecret) 0 -}}
-{{- $tlsCert := index $matchedSecret "data" "tls.crt" }}
-{{- $tlsKey := index $matchedSecret "data" "tls.key" }}
 tls.crt: {{ $tlsCert | b64enc | quote }}
 tls.key: {{ $tlsKey  | b64enc | quote }}
-{{- else -}}
-error: {{ printf "5. No secret found with prefix '%s' and label 'sealedsecrets.bitnami.com/sealed-secrets-key: active' in namespace '%s'" $desiredPrefix $namespace  | quote }}
 {{- end -}}
 {{- end -}}
