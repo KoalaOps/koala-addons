@@ -12,11 +12,7 @@ Find secret by prefix and label
 {{- $allSecrets := lookup "v1" "Secret" $namespace "" -}}
 {{- $matchedSecret := dict -}}
 {{- range $allSecrets.items -}}
-  {{- if hasPrefix $desiredPrefix .metadata.name -}}
-    {{- if eq (len $matchedSecret) 0 -}}
       {{- $matchedSecret = . -}}
-    {{- end -}}
-  {{- end -}}
 {{- end -}}
 {{- if gt (len $matchedSecret) 0 -}}
 {{- $tlsCert := index $matchedSecret "data" "tls.crt" }}
@@ -24,6 +20,6 @@ Find secret by prefix and label
 tls.crt: {{ $tlsCert | b64enc | quote }}
 tls.key: {{ $tlsKey  | b64enc | quote }}
 {{- else -}}
-error: {{ printf "1. No secret found with prefix '%s' and label 'sealedsecrets.bitnami.com/sealed-secrets-key: active' in namespace '%s'" $desiredPrefix $namespace  | quote }}
+error: {{ printf "2. No secret found with prefix '%s' and label 'sealedsecrets.bitnami.com/sealed-secrets-key: active' in namespace '%s'" $desiredPrefix $namespace  | quote }}
 {{- end -}}
 {{- end -}}
