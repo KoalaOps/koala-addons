@@ -309,7 +309,7 @@ resources:
               "editorMode": "code",
               "expr": " sum by (span_name) (rate(calls_total{status_code=\"STATUS_CODE_ERROR\", service_name=\"${service}\"}[$__rate_interval]))",
               "interval": "",
-              "legendFormat": "\{\{ span_name }}",
+              "legendFormat": "{{ span_name }}",
               "range": true,
               "refId": "A"
             }
@@ -403,7 +403,7 @@ resources:
               },
               "editorMode": "code",
               "expr": "sum by (span_name) (rate(duration_milliseconds_count{service_name=\"${service}\"}[$__rate_interval]))",
-              "legendFormat": "\{\{ span_name }}",
+              "legendFormat": "{{ span_name }}",
               "range": true,
               "refId": "A"
             }
@@ -701,7 +701,7 @@ resources:
               "expr": "rate(process_runtime_cpython_cpu_time_seconds_total{type=~\"system\"}[$__rate_interval])*100",
               "hide": false,
               "interval": "2m",
-              "legendFormat": "\{\{job}} (\{\{type}})",
+              "legendFormat": "{{job}} ({{type}})",
               "range": true,
               "refId": "A"
             },
@@ -714,7 +714,7 @@ resources:
               "expr": "rate(process_runtime_cpython_cpu_time_seconds_total{type=~\"user\"}[$__rate_interval])*100",
               "hide": false,
               "interval": "2m",
-              "legendFormat": "\{\{job}} (\{\{type}})",
+              "legendFormat": "{{job}} ({{type}})",
               "range": true,
               "refId": "B"
             }
@@ -817,7 +817,7 @@ resources:
               },
               "editorMode": "code",
               "expr": "process_runtime_cpython_memory_bytes{type=\"rss\"}",
-              "legendFormat": "\{\{job}}",
+              "legendFormat": "{{job}}",
               "range": true,
               "refId": "A"
             }
@@ -1014,7 +1014,7 @@ resources:
               "editorMode": "code",
               "expr": "rate(otel_trace_span_processor_spans{job=\"opentelemetry-demo/quoteservice\"}[2m])*120",
               "interval": "2m",
-              "legendFormat": "\{\{state}}",
+              "legendFormat": "{{state}}",
               "range": true,
               "refId": "A"
             }
@@ -1568,7 +1568,7 @@ resources:
               },
               "editorMode": "code",
               "expr": "sum(rate(otelcol_receiver_accepted_spans{}[$__rate_interval])) by (receiver,transport)",
-              "legendFormat": "\{\{receiver}}-\{\{transport}}",
+              "legendFormat": "{{receiver}}-{{transport}}",
               "range": true,
               "refId": "A"
             }
@@ -1628,7 +1628,7 @@ resources:
               },
               "editorMode": "code",
               "expr": "sum(rate(otelcol_receiver_accepted_spans{}[$__rate_interval])) ",
-              "legendFormat": "\{\{receiver}}-\{\{transport}}",
+              "legendFormat": "{{receiver}}-{{transport}}",
               "range": true,
               "refId": "A"
             }
@@ -1696,7 +1696,7 @@ resources:
               },
               "editorMode": "code",
               "expr": "sum(rate(otelcol_processor_batch_batch_send_size_sum{}[$__rate_interval]))  by (processor)",
-              "legendFormat": "\{\{processor}}",
+              "legendFormat": "{{processor}}",
               "range": true,
               "refId": "A"
             }
@@ -1758,7 +1758,7 @@ resources:
               "expr": "sum(rate(otelcol_exporter_sent_spans{}[$__interval])) ",
               "format": "time_series",
               "instant": false,
-              "legendFormat": "\{\{processor}}",
+              "legendFormat": "{{processor}}",
               "range": true,
               "refId": "A"
             }
@@ -1824,7 +1824,7 @@ resources:
               "expr": "sum(rate(otelcol_exporter_sent_spans{}[$__rate_interval])) by (exporter)",
               "format": "time_series",
               "instant": false,
-              "legendFormat": "\{\{processor}}",
+              "legendFormat": "{{processor}}",
               "range": true,
               "refId": "A"
             }
@@ -1887,7 +1887,7 @@ resources:
               },
               "editorMode": "code",
               "expr": "sum(rate(otelcol_receiver_refused_spans{}[$__rate_interval])) by (receiver,transport)",
-              "legendFormat": "\{\{receiver}}-\{\{transport}}",
+              "legendFormat": "{{receiver}}-{{transport}}",
               "range": true,
               "refId": "A"
             }
@@ -1947,7 +1947,7 @@ resources:
               },
               "editorMode": "code",
               "expr": "sum(rate(otelcol_receiver_refused_spans{}[$__rate_interval])) ",
-              "legendFormat": "\{\{receiver}}-\{\{transport}}",
+              "legendFormat": "{{receiver}}-{{transport}}",
               "range": true,
               "refId": "A"
             }
@@ -2010,7 +2010,7 @@ resources:
               "expr": "sum(rate(otelcol_exporter_send_failed_spans{}[$__rate_interval])) ",
               "format": "time_series",
               "instant": false,
-              "legendFormat": "\{\{processor}}",
+              "legendFormat": "{{processor}}",
               "range": true,
               "refId": "A"
             }
@@ -2076,7 +2076,7 @@ resources:
               "expr": "sum(rate(otelcol_exporter_send_failed_spans{}[$__rate_interval])) by (exporter)",
               "format": "time_series",
               "instant": false,
-              "legendFormat": "\{\{processor}}",
+              "legendFormat": "{{processor}}",
               "range": true,
               "refId": "A"
             }
@@ -2352,7 +2352,7 @@ resources:
               },
               "editorMode": "code",
               "expr": "sum(rate(otelcol_receiver_accepted_metric_points{}[$__rate_interval])) by (receiver,transport)",
-              "legendFormat": "\{\{receiver}}-\{\{transport}}",
+              "legendFormat": "{{receiver}}-{{transport}}",
               "range": true,
               "refId": "A"
             }
@@ -2412,7 +2412,7 @@ resources:
               },
               "editorMode": "code",
               "expr": "sum(rate(otelcol_receiver_accepted_metric_points{}[$__rate_interval])) ",
-              "legendFormat": "\{\{receiver}}-\{\{transport}}",
+              "legendFormat": "{{receiver}}-{{transport}}",
               "range": true,
               "refId": "A"
             }
@@ -2479,7 +2479,7 @@ resources:
               },
               "editorMode": "code",
               "expr": "sum(rate(otelcol_processor_batch_batch_send_size_sum{}[$__rate_interval]))  by (processor)",
-              "legendFormat": "\{\{processor}}",
+              "legendFormat": "{{processor}}",
               "range": true,
               "refId": "A"
             }
@@ -2542,7 +2542,7 @@ resources:
               "expr": "sum(rate(otelcol_exporter_sent_metric_points{}[$__rate_interval])) ",
               "format": "time_series",
               "instant": false,
-              "legendFormat": "\{\{processor}}",
+              "legendFormat": "{{processor}}",
               "range": true,
               "refId": "A"
             }
@@ -2608,7 +2608,7 @@ resources:
               "expr": "sum(rate(otelcol_exporter_sent_metric_points{}[$__rate_interval])) by (exporter) ",
               "format": "time_series",
               "instant": false,
-              "legendFormat": "\{\{processor}}",
+              "legendFormat": "{{processor}}",
               "range": true,
               "refId": "A"
             }
@@ -2671,7 +2671,7 @@ resources:
               },
               "editorMode": "code",
               "expr": "sum(rate(otelcol_receiver_refused_metric_points{}[$__rate_interval])) by (receiver,transport)",
-              "legendFormat": "\{\{receiver}}-\{\{transport}}",
+              "legendFormat": "{{receiver}}-{{transport}}",
               "range": true,
               "refId": "A"
             }
@@ -2731,7 +2731,7 @@ resources:
               },
               "editorMode": "code",
               "expr": "sum(rate(otelcol_receiver_refused_metric_points{}[$__rate_interval])) ",
-              "legendFormat": "\{\{receiver}}-\{\{transport}}",
+              "legendFormat": "{{receiver}}-{{transport}}",
               "range": true,
               "refId": "A"
             }
@@ -2794,7 +2794,7 @@ resources:
               "expr": "sum(rate(otelcol_exporter_send_failed_metric_points{}[$__rate_interval])) ",
               "format": "time_series",
               "instant": false,
-              "legendFormat": "\{\{processor}}",
+              "legendFormat": "{{processor}}",
               "range": true,
               "refId": "A"
             }
@@ -2860,7 +2860,7 @@ resources:
               "expr": "sum(rate(otelcol_exporter_send_failed_metric_points{}[$__rate_interval])) by (exporter)",
               "format": "time_series",
               "instant": false,
-              "legendFormat": "\{\{processor}}",
+              "legendFormat": "{{processor}}",
               "range": true,
               "refId": "A"
             }
@@ -3072,7 +3072,7 @@ resources:
               "expr": "sum_over_time(scrape_samples_scraped[$__range])/ count_over_time(scrape_samples_scraped[$__range])/(5*30)",
               "format": "time_series",
               "instant": false,
-              "legendFormat": "\{\{job}}/\{\{instance}}",
+              "legendFormat": "{{job}}/{{instance}}",
               "range": true,
               "refId": "A"
             }
@@ -3515,7 +3515,7 @@ resources:
               "format": "time_series",
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Accepted: \{\{receiver}} \{\{transport}} \{\{service_instance_id}}",
+              "legendFormat": "Accepted: {{receiver}} {{transport}} {{service_instance_id}}",
               "range": true,
               "refId": "A"
             },
@@ -3531,7 +3531,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Refused: \{\{receiver}} \{\{transport}} \{\{service_instance_id}}",
+              "legendFormat": "Refused: {{receiver}} {{transport}} {{service_instance_id}}",
               "range": true,
               "refId": "B"
             }
@@ -3654,7 +3654,7 @@ resources:
               "format": "time_series",
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Accepted: \{\{receiver}} \{\{transport}} \{\{service_instance_id}}",
+              "legendFormat": "Accepted: {{receiver}} {{transport}} {{service_instance_id}}",
               "range": true,
               "refId": "A"
             },
@@ -3670,7 +3670,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Refused: \{\{receiver}} \{\{transport}} \{\{service_instance_id}}",
+              "legendFormat": "Refused: {{receiver}} {{transport}} {{service_instance_id}}",
               "range": true,
               "refId": "B"
             }
@@ -3793,7 +3793,7 @@ resources:
               "format": "time_series",
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Accepted: \{\{receiver}} \{\{transport}} \{\{service_instance_id}}",
+              "legendFormat": "Accepted: {{receiver}} {{transport}} {{service_instance_id}}",
               "range": true,
               "refId": "A"
             },
@@ -3809,7 +3809,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Refused: \{\{receiver}} \{\{transport}} \{\{service_instance_id}}",
+              "legendFormat": "Refused: {{receiver}} {{transport}} {{service_instance_id}}",
               "range": true,
               "refId": "B"
             }
@@ -3975,7 +3975,7 @@ resources:
               "instant": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Batch send size count: \{\{processor}}",
+              "legendFormat": "Batch send size count: {{processor}}",
               "refId": "B"
             },
             {
@@ -3991,7 +3991,7 @@ resources:
               "instant": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Batch send size sum: \{\{processor}}",
+              "legendFormat": "Batch send size sum: {{processor}}",
               "refId": "A"
             }
           ],
@@ -4078,7 +4078,7 @@ resources:
               "instant": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "\{\{le}}",
+              "legendFormat": "{{le}}",
               "refId": "B"
             }
           ],
@@ -4217,7 +4217,7 @@ resources:
               "instant": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Batch sent due to a size trigger: \{\{processor}}",
+              "legendFormat": "Batch sent due to a size trigger: {{processor}}",
               "refId": "B"
             },
             {
@@ -4233,7 +4233,7 @@ resources:
               "instant": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Batch sent due to a timeout trigger: \{\{processor}}",
+              "legendFormat": "Batch sent due to a timeout trigger: {{processor}}",
               "refId": "A"
             }
           ],
@@ -4381,7 +4381,7 @@ resources:
               "format": "time_series",
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Sent: \{\{exporter}} \{\{service_instance_id}}",
+              "legendFormat": "Sent: {{exporter}} {{service_instance_id}}",
               "range": true,
               "refId": "A"
             },
@@ -4397,7 +4397,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Enqueue: \{\{exporter}} \{\{service_instance_id}}",
+              "legendFormat": "Enqueue: {{exporter}} {{service_instance_id}}",
               "range": true,
               "refId": "B"
             },
@@ -4413,7 +4413,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Failed: \{\{exporter}} \{\{service_instance_id}}",
+              "legendFormat": "Failed: {{exporter}} {{service_instance_id}}",
               "range": true,
               "refId": "C"
             }
@@ -4536,7 +4536,7 @@ resources:
               "format": "time_series",
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Sent: \{\{exporter}} \{\{service_instance_id}}",
+              "legendFormat": "Sent: {{exporter}} {{service_instance_id}}",
               "range": true,
               "refId": "A"
             },
@@ -4552,7 +4552,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Enqueue: \{\{exporter}} \{\{service_instance_id}}",
+              "legendFormat": "Enqueue: {{exporter}} {{service_instance_id}}",
               "range": true,
               "refId": "B"
             },
@@ -4568,7 +4568,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Failed: \{\{exporter}} \{\{service_instance_id}}",
+              "legendFormat": "Failed: {{exporter}} {{service_instance_id}}",
               "range": true,
               "refId": "C"
             }
@@ -4691,7 +4691,7 @@ resources:
               "format": "time_series",
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Sent: \{\{exporter}} \{\{service_instance_id}}",
+              "legendFormat": "Sent: {{exporter}} {{service_instance_id}}",
               "range": true,
               "refId": "A"
             },
@@ -4707,7 +4707,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Enqueue: \{\{exporter}} \{\{service_instance_id}}",
+              "legendFormat": "Enqueue: {{exporter}} {{service_instance_id}}",
               "range": true,
               "refId": "B"
             },
@@ -4723,7 +4723,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Failed: \{\{exporter}} \{\{service_instance_id}}",
+              "legendFormat": "Failed: {{exporter}} {{service_instance_id}}",
               "range": true,
               "refId": "C"
             }
@@ -4828,7 +4828,7 @@ resources:
               "format": "time_series",
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Max queue size: \{\{exporter}}",
+              "legendFormat": "Max queue size: {{exporter}}",
               "range": true,
               "refId": "A"
             }
@@ -4933,7 +4933,7 @@ resources:
               "format": "time_series",
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Queue capacity: \{\{exporter}}",
+              "legendFormat": "Queue capacity: {{exporter}}",
               "range": true,
               "refId": "A"
             }
@@ -5137,7 +5137,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Max Memory RSS \{\{service_instance_id}}",
+              "legendFormat": "Max Memory RSS {{service_instance_id}}",
               "range": true,
               "refId": "C"
             },
@@ -5152,7 +5152,7 @@ resources:
               "format": "time_series",
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Avg Memory RSS \{\{service_instance_id}}",
+              "legendFormat": "Avg Memory RSS {{service_instance_id}}",
               "range": true,
               "refId": "A"
             },
@@ -5168,7 +5168,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Min Memory RSS \{\{service_instance_id}}",
+              "legendFormat": "Min Memory RSS {{service_instance_id}}",
               "range": true,
               "refId": "B"
             }
@@ -5346,7 +5346,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Max Memory RSS \{\{service_instance_id}}",
+              "legendFormat": "Max Memory RSS {{service_instance_id}}",
               "range": true,
               "refId": "C"
             },
@@ -5361,7 +5361,7 @@ resources:
               "format": "time_series",
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Avg Memory RSS \{\{service_instance_id}}",
+              "legendFormat": "Avg Memory RSS {{service_instance_id}}",
               "range": true,
               "refId": "A"
             },
@@ -5377,7 +5377,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Min Memory RSS \{\{service_instance_id}}",
+              "legendFormat": "Min Memory RSS {{service_instance_id}}",
               "range": true,
               "refId": "B"
             }
@@ -5555,7 +5555,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Max Memory RSS \{\{service_instance_id}}",
+              "legendFormat": "Max Memory RSS {{service_instance_id}}",
               "range": true,
               "refId": "C"
             },
@@ -5570,7 +5570,7 @@ resources:
               "format": "time_series",
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Avg Memory RSS \{\{service_instance_id}}",
+              "legendFormat": "Avg Memory RSS {{service_instance_id}}",
               "range": true,
               "refId": "A"
             },
@@ -5586,7 +5586,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Min Memory RSS \{\{service_instance_id}}",
+              "legendFormat": "Min Memory RSS {{service_instance_id}}",
               "range": true,
               "refId": "B"
             }
@@ -5760,7 +5760,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Max CPU usage \{\{service_instance_id}}",
+              "legendFormat": "Max CPU usage {{service_instance_id}}",
               "range": true,
               "refId": "B"
             },
@@ -5776,7 +5776,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Avg CPU usage \{\{service_instance_id}}",
+              "legendFormat": "Avg CPU usage {{service_instance_id}}",
               "range": true,
               "refId": "A"
             },
@@ -5792,7 +5792,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Min CPU usage \{\{service_instance_id}}",
+              "legendFormat": "Min CPU usage {{service_instance_id}}",
               "range": true,
               "refId": "C"
             }
@@ -6008,7 +6008,7 @@ resources:
               "hide": false,
               "interval": "$minstep",
               "intervalFactor": 1,
-              "legendFormat": "Service instance uptime: \{\{service_instance_id}}",
+              "legendFormat": "Service instance uptime: {{service_instance_id}}",
               "range": true,
               "refId": "B"
             }
@@ -6783,7 +6783,7 @@ resources:
               "hide": true,
               "instant": false,
               "interval": "",
-              "legendFormat": "\{\{service_name}}-quantile_0.50",
+              "legendFormat": "{{service_name}}-quantile_0.50",
               "range": true,
               "refId": "A"
             },
@@ -6798,7 +6798,7 @@ resources:
               "hide": false,
               "instant": true,
               "interval": "",
-              "legendFormat": "\{\{le}} - \{\{service_name}}",
+              "legendFormat": "{{le}} - {{service_name}}",
               "range": false,
               "refId": "B"
             },
@@ -6907,7 +6907,7 @@ resources:
               "format": "time_series",
               "instant": true,
               "interval": "",
-              "legendFormat": "\{\{service_name}}",
+              "legendFormat": "{{service_name}}",
               "range": false,
               "refId": "A"
             }
@@ -6984,7 +6984,7 @@ resources:
               "expr": "topk(7,sum(rate(calls_total{status_code=\"STATUS_CODE_ERROR\",service_name=~\"$service\", span_name=~\"$span_name\"}[$__range])) by (service_name))",
               "instant": true,
               "interval": "",
-              "legendFormat": "\{\{service_name}}",
+              "legendFormat": "{{service_name}}",
               "range": false,
               "refId": "A"
             }
@@ -7366,7 +7366,7 @@ resources:
               "hide": true,
               "instant": false,
               "interval": "",
-              "legendFormat": "\{\{service_name}}-quantile_0.50",
+              "legendFormat": "{{service_name}}-quantile_0.50",
               "range": true,
               "refId": "A"
             },
@@ -7381,7 +7381,7 @@ resources:
               "hide": false,
               "instant": true,
               "interval": "",
-              "legendFormat": "\{\{span_name}}",
+              "legendFormat": "{{span_name}}",
               "range": false,
               "refId": "B"
             },
@@ -7480,7 +7480,7 @@ resources:
               "expr": "topk(7, sum by (span_name,service_name)(increase(duration_milliseconds_sum{service_name=~\"${service}\", span_name=~\"$span_name\"}[5m]) / increase(duration_milliseconds_count{service_name=~\"${service}\",span_name=~\"$span_name\"}[5m\n])))",
               "instant": true,
               "interval": "",
-              "legendFormat": "\{\{span_name}} [\{\{service_name}}]",
+              "legendFormat": "{{span_name}} [{{service_name}}]",
               "range": false,
               "refId": "A"
             }
@@ -7584,7 +7584,7 @@ resources:
               "expr": "topk(7,sum by (span_name,service_name)(increase(duration_milliseconds_sum{service_name=~\"$service\", span_name=~\"$span_name\"}[$__rate_interval]) / increase(duration_milliseconds_count{service_name=~\"$service\", span_name=~\"$span_name\"}[$__rate_interval])))",
               "instant": false,
               "interval": "",
-              "legendFormat": "[\{\{service_name}}]  \{\{span_name}}",
+              "legendFormat": "[{{service_name}}]  {{span_name}}",
               "range": true,
               "refId": "A"
             }
