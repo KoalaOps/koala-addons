@@ -1,0 +1,20 @@
+destination:
+  server: unknown
+  namespace: kube-system
+addonValues:
+  parameters: {}
+  cluster:
+    name: unknown
+  namespace: kube-system
+  sealedSecretsAddon:
+    addonParameters:
+    valuesObject:
+      sealedsecrets:
+        secretName: sealed-secrets-key
+      charts:
+        # The following charts were tested with the addon, you may overide these values if you know what you are doing.
+        sealedsecrets:
+          name: sealed-secrets
+          alias: sealedsecrets
+          version: 2.15.3
+          repository: https://bitnami-labs.github.io/sealed-secrets

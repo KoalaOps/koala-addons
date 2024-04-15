@@ -1,0 +1,40 @@
+{{- $addonValues := default dict .Values.addonValues -}}
+{{- $sealedSecretsAddon := default dict (index $addonValues "sealedSecretsAddon") -}}
+{{- if $sealedSecretsAddon.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sealed-secrets-addon-{{ .Values.addonValues.cluster.name }}
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: cluster-admin
+  source:
+    {{- $sealedSecretsChart := $sealedSecretsAddon.valuesObject.charts.sealedsecrets }}
+    repoURL: {{$sealedSecretsChart.repository}}
+    targetRevision: {{$sealedSecretsChart.version}}
+    chart: {{$sealedSecretsChart.name}}
+    helm:
+      releaseName: "sealed-secrets-{{ .Values.addonValues.cluster.name }}"
+      parameters: 
+      {{- range $key, $value := $sealedSecretsChart.parameters }}
+        - name: {{ $key }}
+          value: {{ $value }}
+      {{- end }}
+      values: |{{include "defaultPresetSealedSecrets" $ | nindent 8}}
+      valuesObject: 
+        {{- if $sealedSecretsAddon.valuesObject.sealedsecrets }}
+        {{- toYaml $sealedSecretsAddon.valuesObject.sealedsecrets | nindent 8 }}
+        {{- end }}
+  destination:
+    server: {{ .Values.destination.server }}
+    namespace: {{ .Values.destination.namespace }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: true
+  {{- end }}

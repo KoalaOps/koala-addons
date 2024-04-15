@@ -12,7 +12,7 @@ addonValues:
     # addonParameters:
     #  standardBackend: true
     #  createSecrets: true
-    #  mirrorSecretToAllClusters: true
+    #  mirrorSecretsToAllClusters: true
     #  standardClient: true
     addonParameters: {}
     valuesObject:
