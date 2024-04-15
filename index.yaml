@@ -80,6 +80,16 @@ entries:
     version: 0.1.0
   sealed-secrets-addon:
   - apiVersion: v2
+    created: "2024-04-15T22:34:02.289703233Z"
+    description: Sealed Secrets are "one-way" encrypted K8s Secrets that can be created
+      by anyone, but can only be decrypted by the controller running in the target
+      cluster recovering the original object.
+    digest: 0e8e80070c95e411d7f890819d4184364a093ac450b99f114a9d4a291eefcdd3
+    name: sealed-secrets-addon
+    urls:
+    - https://github.com/KoalaOps/koala-addons/releases/download/sealed-secrets-addon-0.1.1/sealed-secrets-addon-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     created: "2024-04-15T19:49:57.228175367Z"
     description: Sealed Secrets are "one-way" encrypted K8s Secrets that can be created
       by anyone, but can only be decrypted by the controller running in the target
@@ -106,4 +116,4 @@ entries:
     urls:
     - https://github.com/KoalaOps/koala-addons/releases/download/yaml-to-manifest-0.1.0/yaml-to-manifest-0.1.0.tgz
     version: 0.1.0
-generated: "2024-04-15T19:49:57.228295961Z"
+generated: "2024-04-15T22:34:02.289732438Z"
