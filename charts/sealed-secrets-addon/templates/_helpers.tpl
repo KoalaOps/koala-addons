@@ -1,3 +1,3 @@
 {{- define "defaultPresetSealedSecrets"}}fullnameOverride: "sealed-secrets-controller"
-    keyrenewperiod: "0"
+keyrenewperiod: "0"
 {{- end}}
