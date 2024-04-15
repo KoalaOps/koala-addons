@@ -67,6 +67,17 @@ entries:
     urls:
     - https://github.com/KoalaOps/koala-addons/releases/download/otel-collector-addon-0.1.0/otel-collector-addon-0.1.0.tgz
     version: 0.1.0
+  sealed-secrets:
+  - apiVersion: v2
+    created: "2024-04-15T19:45:49.089481601Z"
+    description: Sealed Secrets are "one-way" encrypted K8s Secrets that can be created
+      by anyone, but can only be decrypted by the controller running in the target
+      cluster recovering the original object.
+    digest: 26eaa55994b26e9e6abe0b5b8353b7674f9f2f101e09c6f320df9b0ad37993f5
+    name: sealed-secrets
+    urls:
+    - https://github.com/KoalaOps/koala-addons/releases/download/sealed-secrets-0.1.0/sealed-secrets-0.1.0.tgz
+    version: 0.1.0
   yaml-to-manifest:
   - apiVersion: v2
     created: "2024-03-22T21:54:50.543823712Z"
@@ -84,4 +95,4 @@ entries:
     urls:
     - https://github.com/KoalaOps/koala-addons/releases/download/yaml-to-manifest-0.1.0/yaml-to-manifest-0.1.0.tgz
     version: 0.1.0
-generated: "2024-03-24T06:30:18.869468259Z"
+generated: "2024-04-15T19:45:49.089506408Z"
