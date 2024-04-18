@@ -24,7 +24,6 @@ spec:
       {{- end }}
       values: |{{include "defaultPresetSealedSecrets" $ | nindent 8}}
       valuesObject: 
-        fullnameOverride: "sealed-secrets-controller"
         {{- if $sealedSecretsAddon.valuesObject.sealedsecrets }}
         {{- toYaml $sealedSecretsAddon.valuesObject.sealedsecrets | nindent 8 }}
         {{- end }}
