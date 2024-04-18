@@ -1,4 +1,4 @@
 apiVersion: v2
 name: grafana-addon
-description: grafana app addon test
-version: 0.1.1
+description: A Grafana Helm chart is a pre-configured package that allows users to deploy Grafana, a popular open-source analytics and monitoring solution, on Kubernetes clusters using the Helm package manager. This Helm chart simplifies the deployment and management of Grafana by wrapping it and all its dependencies into a single, deployable unit.
+version: 0.1.2

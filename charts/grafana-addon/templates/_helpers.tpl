@@ -1,6 +1,8 @@
 {{- define "defaultPresetGrafana"}}enabled: true
 persistence:
   enabled: true
+deploymentStrategy:
+  type: Recreate
 serviceMonitor:
   enabled: true
 fullnameOverride: grafana
