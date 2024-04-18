@@ -10,7 +10,7 @@ addonValues:
     addonParameters:
     valuesObject:
       sealedsecrets:
-        secretName: sealed-secrets-key
+        # secretName: sealed-secrets-key
       charts:
         # The following charts were tested with the addon, you may overide these values if you know what you are doing.
         sealedsecrets:
