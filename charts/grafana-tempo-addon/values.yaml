@@ -18,6 +18,7 @@ addonValues:
     valuesObject:
       secretName: tempo-auth
       tempo: {}
+      secretsInClusters: [] # if standardBackend, createSecrets and mirrorSecretToAllClusters are true, then the secret to access the cluster will be installed in the following cluster
       ingress:
         enabled: false
         # following are here for FYI as helpers calculate the values based on the following logic
